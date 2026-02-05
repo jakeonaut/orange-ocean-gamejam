@@ -58,6 +58,7 @@ func _process(delta):
             level.textBox.visible = false
             level.textBoxTop.visible = true
             level.textBoxTopText.bbcode_text = "[wave]thank you puny creature.[/wave]"
+            level.helpful_counter += 5
             level.move_counter_at_last_game_state = level.move_counter
             queue_free()
     for i in level.crabsNode.get_child_count():
@@ -80,6 +81,8 @@ func _process(delta):
                 level.textBox.visible = false
                 level.textBoxTop.visible = true
                 level.textBoxTopText.bbcode_text = "[wave]hell yeah.[/wave]"
+                level.helpful_counter += 1
+                level.coconutCrabArray.push_back(crab.get_node("Sprite3D"))
                 level.move_counter_at_last_game_state = level.move_counter
                 queue_free()
         # if isPlayerEating(crab.get_node("Sprite3D")):

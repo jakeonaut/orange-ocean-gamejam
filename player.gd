@@ -2,6 +2,8 @@ extends Spatial
 
 onready var level = get_tree().get_root().get_node("level")
 var coconutProjectileRes = preload("res://coconutProjectile.tscn")
+var playerSheetRes = preload("res://player_sheet.png")
+var playerCoconutSheetRes = preload("res://player_sheet_coconut.png")
 onready var headSprite = get_node("headSprite")
 onready var cameraTarget = get_node("cameraTarget")
 onready var pfftSound = get_node("PfftSound")
@@ -9,7 +11,6 @@ onready var growSound = get_node("GrowSound")
 var facing = Vector2(1, 0)
 var prevFacing = Vector2(1, 0)
 
-var has_coconut_in_mouth = false
 var should_advance_animation_frame = false
 var myBodyParts = []
 var prevBodyPartsStates = []
@@ -18,19 +19,41 @@ func _ready():
 
 var should_grow = false
 func eatAnOrange():
-    if has_coconut_in_mouth:
-        return
+    level.how_many_oranges_ate += 1
     should_grow = true
 
 func eatACoconut():
-    if has_coconut_in_mouth:
-        pass
-    else:
-        has_coconut_in_mouth = true
-        headSprite.updateBaseFrame(2, 4)
+    var could_i_eat_the_coconut = false
+    for i in range(len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        if bodyPart.texture != playerCoconutSheetRes:
+            bodyPart.texture = playerCoconutSheetRes
+            could_i_eat_the_coconut = true
+            break
+    if not could_i_eat_the_coconut:
+        level.owSound.pitch_scale = rand_range(0.4, 0.6)
+        level.owSound.play()
+        level.deathOverlay.visible = false
+        level.deathOverlay.color.a = 0.3
+        level.prevTextBoxVisible = level.textBox.visible
+        level.prevTextBoxTopVisible = level.textBoxTop.visible
+        level.death_counter += 1
+        level.gameState = level.GameState.GAME_OVER
+        level.died_to_coconut_overconsumption = true
+        level.causeOfDeathStr = "ate too many coconuts"
+    return could_i_eat_the_coconut
 
 func spitCoconutProjectile():
+    var has_coconut_in_mouth = false
+    for i in range(len(myBodyParts), 0, -1):
+        var bodyPart = myBodyParts[i - 1]
+        if bodyPart.texture == playerCoconutSheetRes:
+            bodyPart.texture = playerSheetRes
+            has_coconut_in_mouth = true
+            break
     if not has_coconut_in_mouth:
+        if level.has_stolen_a_coconut:
+            level.errorSound.play()
         return
     
     var newCoconutProjectile = coconutProjectileRes.instance()
@@ -67,6 +90,9 @@ func spitCoconutProjectile():
 
 
 func moveUp():
+    if myBodyParts.size() > 1 and facing.y < 0:
+        level.errorSound.play()
+        return false
     if should_grow: grow(0, 1)
     facing = Vector2(0, 1)
     saveBodyPartPositions()
@@ -74,7 +100,11 @@ func moveUp():
     moveMyBodyParts(0, 1)
     faceUp(headSprite)
     should_advance_animation_frame = not should_advance_animation_frame
+    return true
 func moveDown():
+    if myBodyParts.size() > 1 and facing.y > 0:
+        level.errorSound.play()
+        return false
     if should_grow: grow(0, -1)
     facing = Vector2(0, -1)
     saveBodyPartPositions()
@@ -82,7 +112,11 @@ func moveDown():
     moveMyBodyParts(0, -1)
     faceDown(headSprite)
     should_advance_animation_frame = not should_advance_animation_frame
+    return true
 func moveLeft():
+    if myBodyParts.size() > 1 and facing.x > 0:
+        level.errorSound.play()
+        return false
     if should_grow: grow(-1, 0)
     facing = Vector2(-1, 0)
     saveBodyPartPositions()
@@ -90,7 +124,11 @@ func moveLeft():
     moveMyBodyParts(-1, 0)
     faceLeft(headSprite)
     should_advance_animation_frame = not should_advance_animation_frame
+    return true
 func moveRight():
+    if myBodyParts.size() > 1 and facing.x < 0:
+        level.errorSound.play()
+        return false
     if should_grow: grow(1, 0)
     facing = Vector2(1, 0)
     saveBodyPartPositions()
@@ -98,6 +136,7 @@ func moveRight():
     moveMyBodyParts(1, 0)
     faceRight(headSprite)
     should_advance_animation_frame = not should_advance_animation_frame
+    return true
 
 func grow(_x, _y):
     # TODO(jaketrower): This _x, _y should be set according to the direction that the LAST PREVIOUS BODY PART is moving.
