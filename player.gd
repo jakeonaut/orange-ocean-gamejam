@@ -1,40 +1,99 @@
 extends Spatial
 
 onready var level = get_tree().get_root().get_node("level")
+var coconutProjectileRes = preload("res://coconutProjectile.tscn")
 onready var headSprite = get_node("headSprite")
 onready var cameraTarget = get_node("cameraTarget")
 onready var pfftSound = get_node("PfftSound")
 onready var growSound = get_node("GrowSound")
+var facing = Vector2(1, 0)
+var prevFacing = Vector2(1, 0)
 
+var has_coconut_in_mouth = false
 var should_advance_animation_frame = false
 var myBodyParts = []
+var prevBodyPartsStates = []
 func _ready():
     myBodyParts = [headSprite]
 
 var should_grow = false
 func eatAnOrange():
+    if has_coconut_in_mouth:
+        return
     should_grow = true
+
+func eatACoconut():
+    if has_coconut_in_mouth:
+        pass
+    else:
+        has_coconut_in_mouth = true
+        headSprite.updateBaseFrame(2, 4)
+
+func spitCoconutProjectile():
+    if not has_coconut_in_mouth:
+        return
+    
+    var newCoconutProjectile = coconutProjectileRes.instance()
+    level.add_child(newCoconutProjectile)
+    newCoconutProjectile.global_transform.origin = headSprite.global_transform.origin
+    newCoconutProjectile.facing = facing
+    var coconutAniPlayer = newCoconutProjectile.get_node("AnimationPlayer")
+
+    if facing.is_equal_approx(Vector2(1, 0)): # spit right
+        newCoconutProjectile.global_transform.origin += Vector3(1, 0, 0)
+        coconutAniPlayer.stop()
+        coconutAniPlayer.clear_queue()
+        coconutAniPlayer.play("tumbleRight")
+    elif facing.is_equal_approx(Vector2(-1, 0)): # spit left
+        newCoconutProjectile.global_transform.origin += Vector3(-1, 0, 0)
+        coconutAniPlayer.stop()
+        coconutAniPlayer.clear_queue()
+        coconutAniPlayer.play("tumbleLeft")
+    elif facing.is_equal_approx(Vector2(0, 1)): # spit up
+        newCoconutProjectile.global_transform.origin += Vector3(0, 1, 0)
+        coconutAniPlayer.stop()
+        coconutAniPlayer.clear_queue()
+        coconutAniPlayer.play("tumbleRight")
+    elif facing.is_equal_approx(Vector2(0, -1)): # spit down
+        newCoconutProjectile.global_transform.origin += Vector3(0, -1, 0)
+        coconutAniPlayer.stop()
+        coconutAniPlayer.clear_queue()
+        coconutAniPlayer.play("tumbleRight")
+
+    level.spitSound.pitch_scale = rand_range(0.8, 1.2)
+    level.spitSound.play()
+    yield(get_tree().create_timer(0.1), "timeout")
+    level.swooshSound.play()
+
 
 func moveUp():
     if should_grow: grow(0, 1)
+    facing = Vector2(0, 1)
+    saveBodyPartPositions()
     headSprite.global_transform.origin.y += 1
     moveMyBodyParts(0, 1)
     faceUp(headSprite)
     should_advance_animation_frame = not should_advance_animation_frame
 func moveDown():
     if should_grow: grow(0, -1)
+    facing = Vector2(0, -1)
+    saveBodyPartPositions()
     headSprite.global_transform.origin.y -= 1
     moveMyBodyParts(0, -1)
     faceDown(headSprite)
     should_advance_animation_frame = not should_advance_animation_frame
 func moveLeft():
     if should_grow: grow(-1, 0)
+    facing = Vector2(-1, 0)
+    saveBodyPartPositions()
     headSprite.global_transform.origin.x -= 1
     moveMyBodyParts(-1, 0)
     faceLeft(headSprite)
     should_advance_animation_frame = not should_advance_animation_frame
 func moveRight():
     if should_grow: grow(1, 0)
+    facing = Vector2(1, 0)
+    saveBodyPartPositions()
     headSprite.global_transform.origin.x += 1
     moveMyBodyParts(1, 0)
     faceRight(headSprite)
@@ -57,6 +116,30 @@ func grow(_x, _y):
     pfftSound.play()
     for i in range(2):
         level.spawnBubble(newBodySprite.global_transform.origin, i)
+
+func saveBodyPartPositions():
+    prevFacing = facing
+    prevBodyPartsStates = []
+    for i in range(0, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        var bodyPartPos = bodyPart.global_transform.origin
+        var bodyPartFlipH = bodyPart.flip_h
+        var bodyPartFlipV = bodyPart.flip_v
+        var bodyPartRotation = bodyPart.rotation_degrees
+        var bodyPartStartFrame = bodyPart.start_frame
+        prevBodyPartsStates.push_back([bodyPartPos, bodyPartFlipH, bodyPartFlipV, bodyPartRotation, bodyPartStartFrame])
+
+func restoreBodyPartPositions():
+    facing = prevFacing
+    for i in range(0, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        var prevBodyPartState = prevBodyPartsStates[i]
+
+        bodyPart.global_transform.origin = prevBodyPartState[0]
+        bodyPart.flip_h = prevBodyPartState[1]
+        bodyPart.flip_v = prevBodyPartState[2]
+        bodyPart.rotation_degrees = prevBodyPartState[3]
+        bodyPart.updateBaseFrameWithStartFrame(prevBodyPartState[4])
 
 func moveMyBodyParts(_x, _y):
     var x = _x

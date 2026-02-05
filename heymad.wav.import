@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/heymad.wav-11b9214cc451659e8ef489d9fb6cddc5.sample"
+
+[deps]
+
+source_file="res://heymad.wav"
+dest_files=[ "res://.import/heymad.wav-11b9214cc451659e8ef489d9fb6cddc5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

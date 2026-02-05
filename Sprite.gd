@@ -134,3 +134,9 @@ func updateBaseFrame(hframe, vframe):
     base_frame = start_frame
     trySetFrame(start_frame)
     restart()
+
+func updateBaseFrameWithStartFrame(startFrame):
+    start_frame = startFrame
+    base_frame = start_frame
+    trySetFrame(start_frame)
+    restart()
