@@ -1,10 +1,55 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Sprite.gd" type="Script" id=1]
 [ext_resource path="res://player_sheet.png" type="Texture" id=2]
 [ext_resource path="res://player.gd" type="Script" id=3]
 [ext_resource path="res://pfft.wav" type="AudioStream" id=4]
 [ext_resource path="res://grow.wav" type="AudioStream" id=5]
+
+[sub_resource type="QuadMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=8]
+flags_transparent = true
+flags_unshaded = true
+albedo_color = Color( 0.0156863, 0.0156863, 0.0156863, 0 )
+
+[sub_resource type="CylinderMesh" id=4]
+radial_segments = 16
+rings = 1
+
+[sub_resource type="SpatialMaterial" id=5]
+
+[sub_resource type="Animation" id=6]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("CSGCombiner:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "flicker"
+length = 2.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CSGCombiner:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8, 1, 1.2, 2, 2.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ), Vector3( 0.8, 0.8, 1 ), Vector3( 0.9, 0.9, 1 ), Vector3( 0.8, 0.8, 1 ), Vector3( 1, 1, 1 ), Vector3( 0.95, 0.95, 1 ) ]
+}
 
 [node name="player" type="Spatial"]
 script = ExtResource( 3 )
@@ -25,3 +70,25 @@ volume_db = -25.0
 [node name="GrowSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -10.0
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
+calculate_tangents = false
+
+[node name="CSGMesh" type="CSGMesh" parent="CSGCombiner"]
+transform = Transform( 35, 0, 0, 0, 28, 0, 0, 0, 1, 0, 0, 0 )
+generate_lightmap = false
+mesh = SubResource( 1 )
+material = SubResource( 8 )
+
+[node name="PlayerLight" type="CSGMesh" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+operation = 2
+mesh = SubResource( 4 )
+material = SubResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CSGCombiner"]
+root_node = NodePath("../..")
+autoplay = "flicker"
+anims/RESET = SubResource( 6 )
+anims/flicker = SubResource( 7 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://chomp.wav" type="AudioStream" id=2]
@@ -25,6 +25,13 @@
 [ext_resource path="res://equipCoconut.wav" type="AudioStream" id=23]
 [ext_resource path="res://darkSouls.mp3" type="AudioStream" id=24]
 [ext_resource path="res://ricochet.wav" type="AudioStream" id=25]
+[ext_resource path="res://eba_money.wav" type="AudioStream" id=26]
+[ext_resource path="res://lemon.tscn" type="PackedScene" id=27]
+[ext_resource path="res://eba_correct_answer.wav" type="AudioStream" id=28]
+[ext_resource path="res://sadSound.wav" type="AudioStream" id=29]
+[ext_resource path="res://thankyou.wav" type="AudioStream" id=30]
+[ext_resource path="res://eb_glass.wav" type="AudioStream" id=31]
+[ext_resource path="res://drown.wav" type="AudioStream" id=32]
 
 [sub_resource type="Environment" id=1]
 
@@ -49,6 +56,289 @@ font_data = ExtResource( 14 )
 
 [sub_resource type="Theme" id=6]
 default_font = SubResource( 5 )
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite3D2:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite3D3:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite3D4:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite3D:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite3D2:translation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0.9 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Sprite3D3:translation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0.8 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Sprite3D4:translation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0.7 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath(".:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Sprite3D:frame_delay")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.4 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("ThankYouSound:playing")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("WormSound:volume_db")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -25.0 ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("WormSound:playing")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "byebye"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite3D2:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite3D3:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite3D4:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite3D:translation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 3.1 ), Vector3( 1, 1, 5.5 ), Vector3( 2, 0, 5.5 ), Vector3( 4, -1, 5.5 ), Vector3( 6, -3, 5.5 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite3D2:translation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 3 ), Vector3( 0.68, 0.853, 5.44 ), Vector3( 1.687, 0.231, 5.44 ), Vector3( 3.543, -1.177, 5.44 ), Vector3( 4.859, -1.963, 5.44 ), Vector3( 5.618, -3.152, 5.44 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Sprite3D3:translation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 2.9 ), Vector3( 0.33, 0.678, 5.42 ), Vector3( 1.493, 0.467, 5.42 ), Vector3( 2.955, -0.85, 5.42 ), Vector3( 4.327, -2.12, 5.42 ), Vector3( 5.195, -2.962, 5.42 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Sprite3D4:translation")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 2.7 ), Vector3( 0, 0.522, 5.4 ), Vector3( 1.264, 0.87, 5.4 ), Vector3( 2.544, -1.023, 5.4 ), Vector3( 3.879, -1.919, 5.4 ), Vector3( 4.775, -3.089, 5.4 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath(".:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 1.9 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Sprite3D:frame_delay")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.2 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("ThankYouSound:playing")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("WormSound:playing")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 0.5, 0.8, 1.3, 1.6, 2.1, 2.4, 2.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false, true, false, true, false ]
+}
 
 [node name="level" type="Spatial"]
 script = ExtResource( 4 )
@@ -76,8 +366,8 @@ opacity = 0.75
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg5" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -60, -90 )
+[node name="bg6" type="Sprite3D" parent="."]
+transform = Transform( 4, 0, 0, 0, 1, 0, 0, 0, 1, 31, -60, -90 )
 modulate = Color( 0.188235, 0.188235, 0.286275, 1 )
 pixel_size = 0.04
 texture = ExtResource( 6 )
@@ -95,9 +385,8 @@ expand = true
 
 [node name="Text" type="RichTextLabel" parent="CanvasLayer/TextBox"]
 margin_left = 7.0
-margin_top = 8.0
 margin_right = 584.0
-margin_bottom = 99.0
+margin_bottom = 103.0
 rect_clip_content = false
 theme = SubResource( 3 )
 bbcode_enabled = true
@@ -119,9 +408,9 @@ expand = true
 
 [node name="Text" type="RichTextLabel" parent="CanvasLayer/TextBoxTop"]
 margin_left = 7.0
-margin_top = 8.0
+margin_top = -1.0
 margin_right = 584.0
-margin_bottom = 99.0
+margin_bottom = 106.0
 rect_clip_content = false
 theme = SubResource( 3 )
 bbcode_enabled = true
@@ -171,6 +460,20 @@ volume_db = -25.0
 stream = ExtResource( 2 )
 volume_db = -15.0
 
+[node name="CoolSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 26 )
+volume_db = -25.0
+pitch_scale = 0.8
+
+[node name="ApplauseSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 28 )
+volume_db = -18.0
+
+[node name="SadSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 29 )
+volume_db = -5.0
+pitch_scale = 1.5
+
 [node name="SpitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 17 )
 volume_db = -13.0
@@ -201,13 +504,18 @@ pitch_scale = 1.2
 stream = ExtResource( 22 )
 volume_db = -8.0
 
+[node name="ShatterSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 31 )
+volume_db = -28.0
+pitch_scale = 0.9
+
 [node name="EquipCoconutSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 23 )
 volume_db = -5.0
 
 [node name="ScreamSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
-volume_db = -20.0
+volume_db = -18.0
 
 [node name="OwSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
@@ -224,6 +532,9 @@ pitch_scale = 1.5
 
 [node name="orange" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1 )
+
+[node name="lemon" parent="." instance=ExtResource( 27 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -68, 4 )
 
 [node name="orangeFish" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1 )
@@ -393,18 +704,6 @@ script = ExtResource( 9 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -29, 1.5 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Crabs/crab2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
-pixel_size = 0.0625
-texture = ExtResource( 10 )
-hframes = 6
-vframes = 6
-frame = 2
-script = ExtResource( 9 )
-
-[node name="crab12" type="Spatial" parent="Crabs"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -35, 1.5 )
-
-[node name="Sprite3D" type="Sprite3D" parent="Crabs/crab12"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 pixel_size = 0.0625
 texture = ExtResource( 10 )
@@ -641,18 +940,6 @@ vframes = 6
 frame = 2
 script = ExtResource( 9 )
 
-[node name="crab32" type="Spatial" parent="Crabs"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -35, 1.5 )
-
-[node name="Sprite3D" type="Sprite3D" parent="Crabs/crab32"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
-pixel_size = 0.0625
-texture = ExtResource( 10 )
-hframes = 6
-vframes = 6
-frame = 2
-script = ExtResource( 9 )
-
 [node name="crab3" type="Spatial" parent="Crabs"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -29, 1.5 )
 
@@ -676,3 +963,63 @@ hframes = 6
 vframes = 6
 frame = 2
 script = ExtResource( 9 )
+
+[node name="aquariumPet" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, -68, -1 )
+
+[node name="Sprite3D" type="Sprite3D" parent="aquariumPet"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 6
+script = ExtResource( 9 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="aquariumPet"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9 )
+visible = false
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="Sprite3D3" type="Sprite3D" parent="aquariumPet"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8 )
+visible = false
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="Sprite3D4" type="Sprite3D" parent="aquariumPet"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.7 )
+visible = false
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="aquariumPet"]
+anims/RESET = SubResource( 7 )
+anims/byebye = SubResource( 8 )
+
+[node name="ThankYouSound" type="AudioStreamPlayer" parent="aquariumPet"]
+stream = ExtResource( 30 )
+volume_db = -10.0
+pitch_scale = 1.5
+
+[node name="WormSound" type="AudioStreamPlayer" parent="aquariumPet"]
+stream = ExtResource( 32 )
+volume_db = -25.0
+
+[editable path="lemon"]

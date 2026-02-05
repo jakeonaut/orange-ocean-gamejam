@@ -12,7 +12,7 @@ export var max_frames = 2
 var has_finished_animation = false
 var repeat_animation = true
 
-var facing = Vector2(0, 1)
+var facing = Vector2(1, 0)
 var is_rotating = false
 export var should_fizzle_out = false
 var should_soft_fizzle_out = false
@@ -140,3 +140,9 @@ func updateBaseFrameWithStartFrame(startFrame):
     base_frame = start_frame
     trySetFrame(start_frame)
     restart()
+
+func isHorizontal():
+    return facing.y == 0 and (facing.x > 0 or facing.x < 0)
+
+func isVertical():
+    return facing.x == 0 and (facing.y > 0 or facing.y < 0)

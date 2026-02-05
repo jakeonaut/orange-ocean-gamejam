@@ -2,6 +2,7 @@ extends Spatial
 
 onready var player = get_node("player")
 onready var orange = get_node("orange")
+onready var lemon = get_node("lemon")
 onready var coconut1 = get_node("coconut")
 onready var coconut2 = get_node("coconut2")
 onready var coconut3 = get_node("coconut3")
@@ -11,13 +12,18 @@ onready var coconut6 = get_node("coconut6")
 onready var coconut7 = get_node("coconut7")
 onready var coconutMerchant = get_node("coconutMerchant")
 onready var orangeFish = get_node("orangeFish")
+onready var aquariumPet = get_node("aquariumPet")
 onready var bubbleSound = get_node("BubbleSound")
 onready var chompSound = get_node("ChompSound")
 onready var equipCoconutSound = get_node("EquipCoconutSound")
 onready var coconutChompSound = get_node("CoconutChompSound")
+onready var shatterSound = get_node("ShatterSound")
 onready var spitSound = get_node("SpitSound")
+onready var sadSound = get_node("SadSound")
 onready var swooshSound = get_node("SwooshSound")
 onready var crabSound = get_node("CrabSound")
+onready var coolSound = get_node("CoolSound")
+onready var applauseSound = get_node("ApplauseSound")
 onready var owSound = get_node("OwSound")
 onready var bigOwSound = get_node("BigOwSound")
 onready var heySound = get_node("HeySound")
@@ -34,6 +40,12 @@ onready var crabsNode = get_node("Crabs")
 onready var bigCrab = get_node("bigCrab")
 onready var deathOverlay = get_node("CanvasLayer/DeathOverlay")
 onready var deathOverlayText = get_node("CanvasLayer/DeathOverlay/Text")
+
+var freed_aquarium_pet = false
+var should_keep_moving_forward = false
+var minimum_camera_x = 0
+var currentCameraXBounds = Vector2(0, 0)
+var currentCameraYBounds = Vector2(0, 0)
 var has_stolen_a_coconut = false
 var creeped_out_coconut_merchant = false
 var sin_counter = 0
@@ -44,14 +56,20 @@ var random_bubble_time_limit = 10
 var death_counter = 0
 var move_counter = 0
 var move_counter_at_last_game_state = 0
+var combo_counter = 0
+var trick_counter = 0
+var max_combo = 0
 var prevTextBoxVisible = false
 var prevTextBoxTopVisible = false
 var died_to_coconut_overconsumption = false
 var has_died_to_coconut_crab = false
 var coconutCrabArray = []
 
+var CAMERA_MIN_X_OFFSET = 2
+var LEMON_Y_OFFSET = -69
 var HOW_MANY_ORANGES = 3
 var HOW_MANY_ORANGES_NO_IM_SERIOUS = 10
+var HOW_MANY_LEMONS = 5
 
 enum GameState {
     ORANGE_EATING,
@@ -59,6 +77,7 @@ enum GameState {
     BEGIN_ADVENTURE,
     CRAB_INTERLUDE,
     COCONUT_CRAB_TIME,
+    OCEAN_DEEP,
     GAME_OVER,
 }
 var gameState = GameState.ORANGE_EATING
@@ -66,7 +85,9 @@ var prevGameState = GameState.ORANGE_EATING
 var causeOfDeathStr = "you died"
 
 var how_many_oranges_ate = 0
-var adventure_size = 10
+var how_many_coconuts_ate = 0
+var how_many_lemons_ate = 0
+var adventure_camera_size = 10
 var should_snap_camera = false
 
 func _ready():
@@ -90,7 +111,13 @@ func _process(delta):
                 random_bubble_time_limit = rand_range(10, 40)
                 spawnBubble(player.headSprite.global_transform.origin, 0)
     if has_player_moved:
-        move_counter += 1
+        if isPlayerOutOfBounds():
+            player.restoreBodyPartPositions()
+            print("OUT OF BOUNDS")
+            errorSound.play()
+            has_player_moved = false
+        else:
+            move_counter += 1
     # okay, semi-regardless of game state...
     if gameState != GameState.GAME_OVER:
         thingsToDoRegardlessOfGameState(has_player_moved, delta)
@@ -129,6 +156,8 @@ func _process(delta):
                 for i in range(3):
                     spawnBubble(player.headSprite.global_transform.origin, i + 1)    
                 if how_many_oranges_ate >= HOW_MANY_ORANGES_NO_IM_SERIOUS:
+                    if orange.visible:
+                        heyUpsetSound.play()
                     orange.visible = false
                     sin_counter += 2
                     textBoxText.bbcode_text = "[center]well, are you happy? [color=#ff8426]they're[/color] all gone.\ni hate you[/center]"
@@ -137,6 +166,8 @@ func _process(delta):
                         orange.global_transform.origin.x = randi() % 7 - 3
                         orange.global_transform.origin.y = randi() % 7 - 3
             elif isPlayerEating(orangeFish):
+                CAMERA_X_OFFSET = 7
+                CAMERA_Y_OFFSET = 6
                 screamSound.play()
                 sin_counter += 10
                 player.eatAnOrange()
@@ -206,9 +237,10 @@ func _process(delta):
                 else:
                     textBoxText.bbcode_text = "[center]you gonna pay for that bub?[/center]"
             elif player.headSprite.global_transform.origin.y <= -25:
-                move_counter_at_last_game_state = move_counter
+                if not textBoxTopText.bbcode_text == "[color=red]we told you not to fuck with us man[/color]":
+                    move_counter_at_last_game_state = move_counter
                 textBox.visible = false
-                if not textBoxTop.visible:
+                if not textBoxTop.visible or (textBoxTopText.bbcode_text == "[color=red]we told you not to fuck with us man[/color]" and move_counter >= move_counter_at_last_game_state + 2):
                     crabSound.pitch_scale = rand_range(0.9, 1.1)
                     crabSound.play()
                     textBoxTop.visible = true
@@ -226,6 +258,64 @@ func _process(delta):
         if has_player_moved:
             playerMovedEatAnOrange()
             if move_counter > move_counter_at_last_game_state + 2:
+                textBox.visible = false
+                textBoxTop.visible = false
+            if isPlayerEating(lemon):
+                player.eatALemon()
+                gameState = GameState.OCEAN_DEEP
+                should_keep_moving_forward = true
+                chompSound.pitch_scale = rand_range(0.8, 1.2)
+                chompSound.play()
+                for i in range(3):
+                    spawnBubble(player.headSprite.global_transform.origin, i + 1)
+                lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
+                lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
+                while doesIntersectWithAnyBodyPart(lemon):
+                    lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
+                    lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
+    elif gameState == GameState.OCEAN_DEEP:
+        prevGameState = gameState
+        updateGameCamera(delta, Vector2(0, 60), Vector2(-65, -65))
+        if has_player_moved:
+            playerMovedEatAnOrange()
+            if move_counter > move_counter_at_last_game_state + 2:
+                textBox.visible = false
+                textBoxTop.visible = false
+            if isPlayerEating(lemon):
+                player.eatALemon()
+                minimum_camera_x = player.headSprite.global_transform.origin.x - CAMERA_MIN_X_OFFSET
+                chompSound.pitch_scale = rand_range(0.8, 1.2)
+                chompSound.play()
+                for i in range(3):
+                    spawnBubble(player.headSprite.global_transform.origin, i + 1)
+                if how_many_lemons_ate >= HOW_MANY_LEMONS:
+                    lemon.visible = false
+                else:
+                    lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
+                    lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
+                    while doesIntersectWithAnyBodyPart(lemon):
+                        lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
+                        lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
+
+            var headPos = player.headSprite.global_transform.origin
+            var aquariumPetPos = aquariumPet.global_transform.origin
+            if headPos.x > aquariumPetPos.x - 4 and headPos.x < aquariumPetPos.x + 4 and not freed_aquarium_pet:
+                move_counter_at_last_game_state = move_counter
+                if not textBoxTop.visible:
+                    if minimum_camera_x < aquariumPetPos.x - CAMERA_MIN_X_OFFSET*2:
+                        minimum_camera_x = aquariumPetPos.x - CAMERA_MIN_X_OFFSET*2
+                    heySound.pitch_scale = rand_range(1.2, 1.4)
+                    heySound.play()
+                    textBoxTop.visible = true
+                    textBoxTopText.bbcode_text = "hi!! hi!! over here!!! i'm stuck\nin this aquarium... i'm slowly dying lol!!"
+            elif headPos.x >= aquariumPetPos.x + 4 and headPos.x < aquariumPetPos.x + 7 and not freed_aquarium_pet:
+                move_counter_at_last_game_state = move_counter
+                if textBoxTopText.bbcode_text == "hi!! hi!! over here!!! i'm stuck\nin this aquarium... i'm slowly dying lol!!":
+                    sadSound.pitch_scale = rand_range(1.4, 1.6)
+                    sadSound.play()
+                    textBoxTop.visible = true
+                    textBoxTopText.bbcode_text = "oh okay... bye..."
+            elif move_counter > move_counter_at_last_game_state + 3:
                 textBox.visible = false
                 textBoxTop.visible = false
     elif gameState == GameState.GAME_OVER:
@@ -248,9 +338,9 @@ func _process(delta):
                 textBoxTopText.bbcode_text = "[color=red]we told you not to fuck with us man[/color]"
                 textBox.visible = false
                 crabSound.play()
-            elif prevGameState == GameState.COCONUT_CRAB_TIME and has_died_to_coconut_crab:
+            elif prevGameState == GameState.COCONUT_CRAB_TIME:
                 textBoxTop.visible = true
-                if causeOfDeathStr == "got BIG COCONUT CRABBED":
+                if causeOfDeathStr == "got BIG COCONUT CRABBED" or causeOfDeathStr == "got BIG CRABBED":
                     textBoxTopText.bbcode_text = "[color=red]sorry puny one,\ni am comfortable here.[/color]"
                 elif causeOfDeathStr == "got coconut crabbed":
                     textBoxTopText.bbcode_text = "[color=red]oh, wait, you want us to move?\n sorry, sorry.[/color]"
@@ -260,8 +350,23 @@ func _process(delta):
                 crabSound.play()
             died_to_coconut_overconsumption = false
 
+
+var CAMERA_X_OFFSET = 6
+var CAMERA_Y_OFFSET = 5
+func isPlayerOutOfBounds():
+    var lb = min(currentCameraXBounds.x, minimum_camera_x) - CAMERA_X_OFFSET
+    var rb = currentCameraXBounds.y + CAMERA_X_OFFSET
+    var tb = currentCameraYBounds.x + CAMERA_Y_OFFSET
+    var bb = currentCameraYBounds.y - CAMERA_Y_OFFSET
+    var headPos = player.headSprite.global_transform.origin
+    var isCameraOutOfBounds = headPos.x <= lb or headPos.x >= rb or headPos.y >= tb or headPos.y <= bb
+    return isCameraOutOfBounds or (isPlayerEating(aquariumPet) and aquariumPet.get_node("Sprite3D").start_frame != 12)
+
+
 func thingsToDoRegardlessOfGameState(has_player_moved, delta):
     if has_player_moved:
+        player.csgCombinerPosition.global_transform.origin.x = player.headSprite.global_transform.origin.x
+        player.csgCombinerPosition.global_transform.origin.y = player.headSprite.global_transform.origin.y
         playerMovedBubbleSpawn()
         if isPlayerHeadCollidingWith(bigCrab.get_node("Sprite3D"), -1.5, 1, 1.5, -1):
             owSound.pitch_scale = rand_range(0.4, 0.6)
@@ -410,23 +515,39 @@ func spawnBubble(pos, time_to_yield = 0):
     if randi() % 2 <= 1:
         newBubble.which_x = -1
 
-func updateGameCamera(delta, x_bounds, y_bounds):
-    camera.size = camera.size + (adventure_size - camera.size) * (delta*5)
-    if stepify(camera.size, 0.1) == stepify(adventure_size, 0.1):
-        camera.size = adventure_size
+func updateGameCamera(delta, x_bounds = null, y_bounds = null):
+    if x_bounds != null: currentCameraXBounds = x_bounds
+    if y_bounds != null: currentCameraYBounds = y_bounds
+
+    camera.size = camera.size + (adventure_camera_size - camera.size) * (delta*5)
+    if stepify(camera.size, 0.1) == stepify(adventure_camera_size, 0.1):
+        camera.size = adventure_camera_size
     if should_snap_camera:
         camera.global_transform.origin = player.cameraTarget.global_transform.origin
-    elif camera.size == adventure_size:
+    elif camera.size == adventure_camera_size:
         camera.global_transform.origin = camera.global_transform.origin + (player.cameraTarget.global_transform.origin - camera.global_transform.origin) * (delta*2)
-        if stepify(camera.global_transform.origin.x, 0.1) == stepify(player.cameraTarget.global_transform.origin.x, 0.1) and stepify(camera.global_transform.origin.y, 0.1) == stepify(player.cameraTarget.global_transform.origin.y, 0.1):
-            # should_snap_camera = true
-            pass
-        if camera.global_transform.origin.x > x_bounds.y:
-            camera.global_transform.origin.x = x_bounds.y
-        elif camera.global_transform.origin.x < x_bounds.x:
-            camera.global_transform.origin.x = x_bounds.x
-        if camera.global_transform.origin.y < y_bounds.y:
-            camera.global_transform.origin.y = y_bounds.y
-        elif camera.global_transform.origin.y > y_bounds.x:
-            camera.global_transform.origin.y = y_bounds.x
+        if camera.global_transform.origin.x > currentCameraXBounds.y:
+            camera.global_transform.origin.x = currentCameraXBounds.y
+        elif camera.global_transform.origin.x < currentCameraXBounds.x:
+            camera.global_transform.origin.x = currentCameraXBounds.x
+        if camera.global_transform.origin.y < currentCameraYBounds.y:
+            camera.global_transform.origin.y = currentCameraYBounds.y
+        elif camera.global_transform.origin.y > currentCameraYBounds.x:
+            camera.global_transform.origin.y = currentCameraYBounds.x
+
+    if should_keep_moving_forward:
+        if camera.global_transform.origin.x < minimum_camera_x:
+            camera.global_transform.origin.x = minimum_camera_x
+            
+
+    var y = camera.global_transform.origin.y
+    var coverOfDarknessAlpha = ((-40 - y) / 20)
+    if coverOfDarknessAlpha < 0: coverOfDarknessAlpha = 0
+    if coverOfDarknessAlpha > 1: coverOfDarknessAlpha = 1
+    player.coverOfDarkness.material.albedo_color.a = coverOfDarknessAlpha
+
+    # if y > -40, alpha should equal 0
+    # if y == -40, alpha should equal 0
+    # if y == -60, alpha should equal 1
+    # alpha = -40
         
