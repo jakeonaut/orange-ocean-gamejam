@@ -7,99 +7,25 @@ var playerCoconutSheetRes = preload("res://player_sheet_coconut.png")
 var text3dRes = preload("res://3DText.tscn")
 onready var headSprite = get_node("headSprite")
 onready var parasite = get_node("parasite")
-onready var cameraTarget = get_node("cameraTarget")
-onready var pfftSound = get_node("PfftSound")
-onready var growSound = get_node("GrowSound")
-onready var csgCombinerPosition = get_node("CSGCombiner")
-onready var coverOfDarkness = get_node("CSGCombiner/CSGMesh")
-onready var playerLight = get_node("CSGCombiner/PlayerLight")
 var facing = Vector2(1, 0)
 var prevFacing = Vector2(1, 0)
 var should_advance_animation_frame = false
 var myBodyParts = []
 var prevBodyPartsStates = []
-var parasiteTexts = ["pest control!", "deloused!", "parasite... see ya later!"]
-var coolTexts = ["awesome!", "radical!", "groovey!", "cool!", "xD!", "nice!", "okay!", "alright!", "neat!"]
-var smallComboCoolTexts = ["combo?!?", "you go girl!!!", "now that's something!!!", "now we're getting somewhere!!!", "wtf?!?", "hekck yeah!!!!"]
-var bigComboCoolTexts = ["I CAN'T BELIEVE IT!!!!!", "YOU ARE A FISH MASTER!!!!!", "BRO YOU GOTTA TEACH ME HOW TO DO THAT!!!!", "CRAB MODE ACTIVATED!!!!", "WHAT IS THIS POWER?!?!?"]
+
+var coolTexts = ["second best!", "silver (for second)!", "player 2!", "this is another fish!"]
+var smallComboCoolTexts = ["combo (2)?!?", "you go boy!!!", "pets club 2!!!", "2 is a-okay!!!", "2 time!!"]
+var bigComboCoolTexts = ["I ACTUALLY CAN BELIEVE IT!!!!!", "YOU ARE A FISH APPRENTICE!!!!!", "SIS YOU GOTTA TEACH ME HOW TO DO THAT!!!!", "WOLF EEL MODE ACTIVATED!!!!", "22222222?!?!?"]
 
 func _ready():
     myBodyParts = [headSprite]
 
-var should_grow = false
-func eatAnOrange():
-    level.how_many_oranges_ate += 1
-    should_grow = true
+var should_grow = 0
+func eatAHeartFruit():
+    level.how_many_heart_fruit_ate += 1
+    should_grow = 2
 
-func eatALemon():
-    level.how_many_lemons_ate += 1
-    playerLight.scale += Vector3(0.5, 0.5, 0.5)
-
-func eatACoconut():
-    var could_i_eat_the_coconut = false
-    for i in range(len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        if bodyPart.texture != playerCoconutSheetRes:
-            bodyPart.texture = playerCoconutSheetRes
-            could_i_eat_the_coconut = true
-            break
-    if not could_i_eat_the_coconut:
-        level.owSound.pitch_scale = rand_range(0.4, 0.6)
-        level.owSound.play()
-        level.deathOverlay.visible = false
-        level.deathOverlay.color.a = 0.3
-        level.prevTextBoxVisible = level.textBox.visible
-        level.prevTextBoxTopVisible = level.textBoxTop.visible
-        level.death_counter += 1
-        level.gameState = level.GameState.GAME_OVER
-        level.died_to_coconut_overconsumption = true
-        level.causeOfDeathStr = "ate too many coconuts"
-    else:
-        level.how_many_coconuts_ate += 1
-    return could_i_eat_the_coconut
-
-func spitCoconutProjectile():
-    var has_coconut_in_mouth = false
-    for i in range(len(myBodyParts), 0, -1):
-        var bodyPart = myBodyParts[i - 1]
-        if bodyPart.texture == playerCoconutSheetRes:
-            bodyPart.texture = playerSheetRes
-            has_coconut_in_mouth = true
-            break
-    if not has_coconut_in_mouth:
-        if level.has_stolen_a_coconut:
-            level.errorSound.play()
-        return
-    var newCoconutProjectile = coconutProjectileRes.instance()
-    level.add_child(newCoconutProjectile)
-    newCoconutProjectile.global_transform.origin = headSprite.global_transform.origin
-    newCoconutProjectile.facing = facing
-    var coconutAniPlayer = newCoconutProjectile.get_node("AnimationPlayer")
-    if facing.is_equal_approx(Vector2(1, 0)): # spit right
-        newCoconutProjectile.global_transform.origin += Vector3(1, 0, 0)
-        coconutAniPlayer.stop()
-        coconutAniPlayer.clear_queue()
-        coconutAniPlayer.play("tumbleRight")
-    elif facing.is_equal_approx(Vector2(-1, 0)): # spit left
-        newCoconutProjectile.global_transform.origin += Vector3(-1, 0, 0)
-        coconutAniPlayer.stop()
-        coconutAniPlayer.clear_queue()
-        coconutAniPlayer.play("tumbleLeft")
-    elif facing.is_equal_approx(Vector2(0, 1)): # spit up
-        newCoconutProjectile.global_transform.origin += Vector3(0, 1, 0)
-        coconutAniPlayer.stop()
-        coconutAniPlayer.clear_queue()
-        coconutAniPlayer.play("tumbleRight")
-    elif facing.is_equal_approx(Vector2(0, -1)): # spit down
-        newCoconutProjectile.global_transform.origin += Vector3(0, -1, 0)
-        coconutAniPlayer.stop()
-        coconutAniPlayer.clear_queue()
-        coconutAniPlayer.play("tumbleRight")
-    level.spitSound.pitch_scale = rand_range(0.8, 1.2)
-    level.spitSound.play()
-    yield(get_tree().create_timer(0.1), "timeout")
-    level.swooshSound.play()
-
+var how_many_times_did_i_grow = 0
 
 func moveUp(ignore_the_rules = false):
     if not ignore_the_rules and myBodyParts.size() > 1 and facing.y < 0:
@@ -107,13 +33,13 @@ func moveUp(ignore_the_rules = false):
         should_advance_animation_frame = not should_advance_animation_frame
         level.errorSound.play()
         return false
-    if should_grow: grow(0, 1)
+    if should_grow > 0: grow(0, 1)
     saveBodyPartPositions()
     facing = Vector2(0, 1)
     headSprite.global_transform.origin.y += 1
     moveMyBodyParts(0, 1)
     faceUp(headSprite)
-    if not tryToEatParasites(): tryToBeCool()
+    tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
 func moveDown(ignore_the_rules = false):
@@ -122,13 +48,13 @@ func moveDown(ignore_the_rules = false):
         should_advance_animation_frame = not should_advance_animation_frame
         level.errorSound.play()
         return false
-    if should_grow: grow(0, -1)
+    if should_grow > 0: grow(0, -1)
     saveBodyPartPositions()
     facing = Vector2(0, -1)
     headSprite.global_transform.origin.y -= 1
     moveMyBodyParts(0, -1)
     faceDown(headSprite)
-    if not tryToEatParasites(): tryToBeCool()
+    tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
 func moveLeft(ignore_the_rules = false):
@@ -137,13 +63,13 @@ func moveLeft(ignore_the_rules = false):
         should_advance_animation_frame = not should_advance_animation_frame
         level.errorSound.play()
         return false
-    if should_grow: grow(-1, 0)
+    if should_grow > 0: grow(-1, 0)
     saveBodyPartPositions()
     facing = Vector2(-1, 0)
     headSprite.global_transform.origin.x -= 1
     moveMyBodyParts(-1, 0)
     faceLeft(headSprite)
-    if not tryToEatParasites(): tryToBeCool()
+    tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
 func moveRight(ignore_the_rules = false):
@@ -152,94 +78,15 @@ func moveRight(ignore_the_rules = false):
         should_advance_animation_frame = not should_advance_animation_frame
         level.errorSound.play()
         return false
-    if should_grow: grow(1, 0)
+    if should_grow > 0: grow(1, 0)
     saveBodyPartPositions()
     facing = Vector2(1, 0)
     headSprite.global_transform.origin.x += 1
     moveMyBodyParts(1, 0)
     faceRight(headSprite)
-    if not tryToEatParasites(): tryToBeCool()
+    tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
-
-func tryToEatParasites():
-    var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
-    var do_i_have_parasites = false
-    var do_i_still_have_parasites_after_consumption = false
-    var did_i_eat_a_parasite = false
-    for i in range(1, len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        var doesThisPartHaveAParasite = bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible
-        do_i_have_parasites = true if doesThisPartHaveAParasite else do_i_have_parasites
-        var bodyPos = Vector2(bodyPart.global_transform.origin.x, bodyPart.global_transform.origin.y)
-        if doesThisPartHaveAParasite:
-            if headPos.is_equal_approx(bodyPos):
-                did_i_eat_a_parasite = true
-                bodyPart.get_node("parasite").visible = false
-            else:
-                do_i_still_have_parasites_after_consumption = true
-    if did_i_eat_a_parasite:
-        var newAwesomeText = text3dRes.instance()
-        level.add_child(newAwesomeText)
-        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
-        if do_i_still_have_parasites_after_consumption:
-            newAwesomeText.get_node("Label3D").text = parasiteTexts[randi() % len(parasiteTexts)]
-            level.deadParasiteSound.pitch_scale = rand_range(0.8, 1.2)
-            level.deadParasiteSound.play()
-        else:
-            newAwesomeText.get_node("Label3D").text = "NO MORE PARASITE!!!"
-            level.applauseSound.play()
-    # could use player.doIHaveParasites(), but that would repeat the loop needlessly
-    # this logic is a little convoluted though
-    return do_i_have_parasites 
-
-func tryToBeCool():
-    # don't be cool when ur kissing.
-    if level.isPlayerEating(level.player2.headSprite):
-        return
-
-    var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
-    var was_i_cool_this_time = false
-    for i in range(1, len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        var bodyPos = Vector2(bodyPart.global_transform.origin.x, bodyPart.global_transform.origin.y)
-        if bodyPart.frame_coords.y == 1 and headPos.is_equal_approx(bodyPos) and (
-            (headSprite.isHorizontal() and bodyPart.isVertical())
-            or (headSprite.isVertical() and bodyPart.isHorizontal())
-        ):
-            was_i_cool_this_time = true
-            break
-    if was_i_cool_this_time:
-        var newAwesomeText = text3dRes.instance()
-        level.add_child(newAwesomeText)
-        var textArrayToUse = coolTexts
-        if level.combo_counter > 0 and level.combo_counter < 4:
-            textArrayToUse = smallComboCoolTexts
-        elif level.combo_counter >= 4:
-            textArrayToUse = bigComboCoolTexts
-
-        var textToUse = textArrayToUse[randi() % len(textArrayToUse)]
-        level.trick_counter += 1
-        level.combo_counter += 1
-        if level.combo_counter > 1:
-            textToUse = "+" + str(level.combo_counter) + " " + textToUse
-        var got_a_new_highscore = false
-        if level.combo_counter > level.max_combo:
-            level.max_combo = level.combo_counter
-            if level.combo_counter > 1:
-                textToUse = textToUse + "\nnew high score!!!"
-                got_a_new_highscore = true
-        newAwesomeText.get_node("Label3D").text = textToUse
-        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
-        if got_a_new_highscore:
-            level.applauseSound.play()
-        else:
-            level.coolSound.pitch_scale = rand_range(0.8, 1.2)
-            level.coolSound.play()
-    else:
-        level.combo_counter -= 1
-        if level.combo_counter <= 0:
-            level.combo_counter = 0
 
 func maybeAdvanceBodyPartAnimationFrames():
     for i in range(len(myBodyParts)):
@@ -252,6 +99,10 @@ func maybeAdvanceBodyPartAnimationFrames():
             bodyPart.animation_counter = 0
 
 func grow(_x, _y):
+    if how_many_times_did_i_grow >= level.FINAL_NUMBER_OF_ORANGES:
+      level.heartFruit.visible = false
+      should_grow = 0
+      return
     # TODO(jaketrower): This _x, _y should be set according to the direction that the LAST PREVIOUS BODY PART is moving.
     # so, it will be accurate for the first growth, but not subsequent growths rn
     headSprite.updateBaseFrame(2, 0)
@@ -264,34 +115,17 @@ func grow(_x, _y):
     newBodySprite.modulate.b = 1
     newBodySprite.scale = Vector3(1, 1, 1)
     myBodyParts.push_back(newBodySprite)
-    should_grow = false
+    should_grow -= 1
+    if should_grow < 0:
+      should_grow = 0
     # growSound.pitch_scale = rand_range(0.8, 1.2)
     # growSound.play()
     yield(get_tree().create_timer(0.3), "timeout")
-    pfftSound.pitch_scale = rand_range(0.8, 1.2)
-    pfftSound.play()
+    level.player.pfftSound.pitch_scale = rand_range(0.8, 1.2)
+    level.player.pfftSound.play()
     for i in range(2):
         level.spawnBubble(newBodySprite.global_transform.origin, i)
-
-func doIHaveParasites():
-    for i in range(4, len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        if bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible:
-            return true
-    return false
-
-func infestWithParasites():
-    var should_infest_this_part = true
-    for i in range(4, len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        if not should_infest_this_part:
-            should_infest_this_part = true
-            continue
-        var newParasite = parasite.duplicate()
-        newParasite.visible = true
-        bodyPart.add_child(newParasite)
-        newParasite.global_transform.origin = bodyPart.global_transform.origin + Vector3(0, 0, 1)
-        should_infest_this_part = false
+    how_many_times_did_i_grow += 1
 
 func moveMyBodyParts(_x, _y):
     var x = _x
@@ -318,8 +152,6 @@ func moveMyBodyParts(_x, _y):
 
         _x = x
         _y = y
-    cameraTarget.global_transform.origin = headSprite.global_transform.origin
-    cameraTarget.global_transform.origin.z = 6
 
 func updateBodyPartSprite(bodyPart, x, y, _x, _y, leadingBodyPartPos, oldBodyPartPos, x_frame):
     if leadingBodyPartPos.x == oldBodyPartPos.x or leadingBodyPartPos.y == oldBodyPartPos.y: 
@@ -379,6 +211,8 @@ func saveBodyPartPositions():
         prevBodyPartsStates.push_back([bodyPartPos, bodyPartFlipH, bodyPartFlipV, bodyPartRotation, bodyPartStartFrame])
 
 func restoreBodyPartPositions():
+    if prevBodyPartsStates.size() == 0:
+      return
     facing = prevFacing
     for i in range(0, len(myBodyParts)):
         var bodyPart = myBodyParts[i]
@@ -395,6 +229,50 @@ func restoreBodyPartPositions():
             bodyPart.animate(1)
         else:
             bodyPart.animation_counter = 0
+
+func tryToBeCool():
+    var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
+    var was_i_cool_this_time = false
+    for i in range(1, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        var bodyPos = Vector2(bodyPart.global_transform.origin.x, bodyPart.global_transform.origin.y)
+        if bodyPart.frame_coords.y == 1 and headPos.is_equal_approx(bodyPos) and (
+            (headSprite.isHorizontal() and bodyPart.isVertical())
+            or (headSprite.isVertical() and bodyPart.isHorizontal())
+        ):
+            was_i_cool_this_time = true
+            break
+    if was_i_cool_this_time:
+        var newAwesomeText = text3dRes.instance()
+        level.add_child(newAwesomeText)
+        var textArrayToUse = coolTexts
+        if level.combo_counter > 0 and level.combo_counter < 4:
+            textArrayToUse = smallComboCoolTexts
+        elif level.combo_counter >= 4:
+            textArrayToUse = bigComboCoolTexts
+
+        var textToUse = textArrayToUse[randi() % len(textArrayToUse)]
+        level.player2_trick_counter += 1
+        level.player2_combo_counter += 1
+        if level.player2_combo_counter > 1:
+            textToUse = "+" + str(level.player2_combo_counter) + " " + textToUse
+        var got_a_new_highscore = false
+        if level.player2_combo_counter > level.player2_max_combo:
+            level.player2_max_combo = level.player2_combo_counter
+            if level.player2_combo_counter > 1:
+                textToUse = textToUse + "\nnew player 2 score!!!"
+                got_a_new_highscore = true
+        newAwesomeText.get_node("Label3D").text = textToUse
+        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
+        if got_a_new_highscore:
+            level.applauseSound.play()
+        else:
+            level.coolSound.pitch_scale = rand_range(0.8, 1.2)
+            level.coolSound.play()
+    else:
+        level.player2_combo_counter -= 1
+        if level.player2_combo_counter <= 0:
+            level.player2_combo_counter = 0
 
 func faceUp(sprite):
     sprite.facing = Vector2(0, 1)

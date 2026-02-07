@@ -29,7 +29,7 @@ func _process(delta):
 
     if didCollideWithTarget(level.aquariumPet) and level.aquariumPet.get_node("Sprite3D").start_frame != 12:
         activateRicochet()
-        if level.aquariumPet.get_node("Sprite3D").start_frame == 6:
+        if level.aquariumPet.get_node("Sprite3D").start_frame == 6 or level.aquariumPet.get_node("Sprite3D").start_frame == 22:
             level.aquariumPet.get_node("Sprite3D").updateBaseFrameWithStartFrame(10)
             level.textBoxTopText.bbcode_text = "oh!! oh!! yes thank you!!\none more and i should be free!!!"
         elif level.aquariumPet.get_node("Sprite3D").start_frame == 10:

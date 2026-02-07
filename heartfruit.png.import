@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/alt_player_sheet.png-d2ec37bf03d05279f26a44214d46f0bf.stex"
+path="res://.import/heartfruit.png-656d638107fc473aa13272dcc174d84f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://alt_player_sheet.png"
-dest_files=[ "res://.import/alt_player_sheet.png-d2ec37bf03d05279f26a44214d46f0bf.stex" ]
+source_file="res://heartfruit.png"
+dest_files=[ "res://.import/heartfruit.png-656d638107fc473aa13272dcc174d84f.stex" ]
 
 [params]
 
