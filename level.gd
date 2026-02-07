@@ -241,7 +241,7 @@ func _process(delta):
         creditsText.visible = true
         if creditsText.visible_characters == -1:
             creditsText.visible_characters = 0
-            creditsText.bbcode_text = "[center]you beat [color=#ff8426]orange ocean[/color]\nfor bigmode 2026 by [color=#ff8408]p[/color][color=#63ce08]e[/color][color=#ffff3a]t[/color][color=#6b63ff]s[/color] [color=#ffff3a]c[/color][color=#6b63ff]l[/color][color=#ff8408]u[/color][color=#63ce08]b[/color] 2 / jakeonaut\n\ngodot engine: godot team idk\ndark souls death sound: videogamedunkey\ntropical water normal map: filter forge\nerror boy sfx: UGameZ (on itch!)\nwilhelm scream: ???\neverything else by me!\n i made it!\n[shake]ME!!!!![/shake]\npress [ENTER] for final score[/center]"
+            creditsText.bbcode_text = "[center]you beat [color=#ff8426]orange ocean[/color]\nfor bigmode 2026 by [color=#ff8408]p[/color][color=#63ce08]e[/color][color=#ffff3a]t[/color][color=#6b63ff]s[/color] [color=#ffff3a]c[/color][color=#6b63ff]l[/color][color=#ff8408]u[/color][color=#63ce08]b[/color] 2 / jakeonaut\n\nw/ godot, audacity, playscii, aseprite\ndark souls death sound: videogamedunkey\ntropical water normal map: filter forge\nerror boy sfx: UGameZ (on itch!)\nwilhelm scream: ???\neverything else by me!\n i made it!\n[shake]ME!!!!![/shake]\npress [ENTER] for final score[/center]"
         if creditsText.visible_characters < creditsText.bbcode_text.length() - 250 and not Input.is_action_just_pressed("ui_accept"):
             increment_timer += (delta*22)
             if increment_timer >= increment_time_limit:
@@ -486,6 +486,7 @@ func _process(delta):
                 lemonSound.pitch_scale = rand_range(0.8, 1.0)
                 lemonSound.play()
                 gameState = GameState.OCEAN_DEEP
+                bigCrab.global_transform.origin = Vector3(37, -68, 1.5)
                 player.infestWithParasites()
                 for i in range(4):
                     var coconut = [coconut1, coconut3, coconut5, coconut7][i]

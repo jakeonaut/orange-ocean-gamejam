@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://chomp.wav" type="AudioStream" id=2]
@@ -44,6 +44,7 @@
 [ext_resource path="res://kiss.wav" type="AudioStream" id=42]
 [ext_resource path="res://ew.wav" type="AudioStream" id=43]
 [ext_resource path="res://eba_speech_man.wav" type="AudioStream" id=44]
+[ext_resource path="res://whaleFall.png" type="Texture" id=45]
 
 [sub_resource type="Environment" id=1]
 
@@ -692,6 +693,156 @@ tracks/19/keys = {
 "values": [ false, true, false ]
 }
 
+[sub_resource type="Animation" id=13]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite3D:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1.33333, 0.799999, 5.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite3D2:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.666666, 0.666668, 5.4 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite3D3:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.666668, 5.3 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite3D4:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.666667, 0.666668, 5.2 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite3D5:translation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1.33333, 0.666668, 5.1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Sprite3D6:translation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1.86666, 0.866669, 5 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite3D:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1.33333, 0.799999, 5.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite3D2:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.666666, 0.666668, 5.4 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite3D3:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.666668, 5.3 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite3D4:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.666667, 0.666668, 5.2 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite3D5:translation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1.33333, 0.666668, 5.1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Sprite3D6:translation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1.86666, 0.866669, 5 ) ]
+}
+
 [node name="level" type="Spatial"]
 script = ExtResource( 4 )
 
@@ -1085,6 +1236,30 @@ script = ExtResource( 9 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -27, 1.5 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Crabs/crab4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 2
+script = ExtResource( 9 )
+
+[node name="crab12" type="Spatial" parent="Crabs"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, -65, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Crabs/crab12"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 2
+script = ExtResource( 9 )
+
+[node name="crab32" type="Spatial" parent="Crabs"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44, -67, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Crabs/crab32"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 pixel_size = 0.0625
 texture = ExtResource( 10 )
@@ -1529,6 +1704,91 @@ volume_db = -25.0
 [node name="SpinOutSound" type="AudioStreamPlayer" parent="aquariumPet"]
 stream = ExtResource( 18 )
 volume_db = -5.0
+
+[node name="aquariumPet2" type="Spatial" parent="."]
+transform = Transform( -0.492404, 0.0868241, -8.74228e-08, 0.0868241, 0.492404, 0, 4.30473e-08, -7.5904e-09, -1, 44, -65.805, 7 )
+
+[node name="Sprite3D" type="Sprite3D" parent="aquariumPet2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.33333, 0.799999, 5.5 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 12
+script = ExtResource( 9 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="aquariumPet2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.666666, 0.666668, 5.4 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="Sprite3D3" type="Sprite3D" parent="aquariumPet2"]
+transform = Transform( 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0, 1, 0, 0.666668, 5.3 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="Sprite3D4" type="Sprite3D" parent="aquariumPet2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.666667, 0.666668, 5.2 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="Sprite3D5" type="Sprite3D" parent="aquariumPet2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.33333, 0.666668, 5.1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="Sprite3D6" type="Sprite3D" parent="aquariumPet2"]
+transform = Transform( 0.433013, -0.25, 0, 0.25, 0.433013, 0, 0, 0, 1, -1.86666, 0.866669, 5 )
+flip_v = true
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 14
+script = ExtResource( 9 )
+frame_delay = 0.2
+
+[node name="ThankYouSound" type="AudioStreamPlayer" parent="aquariumPet2"]
+stream = ExtResource( 30 )
+volume_db = -5.0
+pitch_scale = 1.2
+
+[node name="YippeeSound" type="AudioStreamPlayer" parent="aquariumPet2"]
+stream = ExtResource( 38 )
+volume_db = -5.0
+
+[node name="WormSound" type="AudioStreamPlayer" parent="aquariumPet2"]
+stream = ExtResource( 32 )
+volume_db = -25.0
+pitch_scale = 0.5
+
+[node name="SpinOutSound" type="AudioStreamPlayer" parent="aquariumPet2"]
+stream = ExtResource( 18 )
+volume_db = -5.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="aquariumPet2"]
+anims/RESET = SubResource( 13 )
+anims/idle = SubResource( 14 )
 
 [node name="Corals" type="Spatial" parent="."]
 
@@ -2783,6 +3043,20 @@ vframes = 4
 frame = 2
 script = ExtResource( 9 )
 
+[node name="smallFishy21" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39, -64, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy21"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+frame = 2
+script = ExtResource( 9 )
+
 [node name="smallFishy" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -21, 0 )
 script = ExtResource( 34 )
@@ -3063,6 +3337,51 @@ vframes = 6
 frame = 20
 script = ExtResource( 9 )
 
+[node name="smallJelly11" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39, -68, 0 )
+script = ExtResource( 34 )
+is_jelly = true
+
+[node name="Sprite3D" type="Sprite3D" parent="smallJelly11"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.5
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 20
+script = ExtResource( 9 )
+
+[node name="smallJelly12" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 43, -62, 0 )
+script = ExtResource( 34 )
+is_jelly = true
+
+[node name="Sprite3D" type="Sprite3D" parent="smallJelly12"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.5
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 20
+script = ExtResource( 9 )
+
+[node name="smallJelly13" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 37, -63, 0 )
+script = ExtResource( 34 )
+is_jelly = true
+
+[node name="Sprite3D" type="Sprite3D" parent="smallJelly13"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.5
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 20
+script = ExtResource( 9 )
+
 [node name="smallFishy9" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -19, 0 )
 script = ExtResource( 34 )
@@ -3094,6 +3413,100 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -20, 0 )
 script = ExtResource( 34 )
 
 [node name="Sprite3D" type="Sprite3D" parent="smallFishy11"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+script = ExtResource( 9 )
+
+[node name="smallFishy22" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -63, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy22"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+script = ExtResource( 9 )
+
+[node name="smallFishy23" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -62, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy23"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+frame = 2
+script = ExtResource( 9 )
+
+[node name="smallFishy24" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 41, -61, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy24"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+script = ExtResource( 9 )
+
+[node name="smallFishy25" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39, -62, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy25"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+frame = 2
+script = ExtResource( 9 )
+
+[node name="smallFishy26" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -61, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy26"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+script = ExtResource( 9 )
+
+[node name="smallFishy27" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -64, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy27"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+opacity = 0.75
+pixel_size = 0.0625
+texture = ExtResource( 33 )
+hframes = 4
+vframes = 4
+frame = 2
+script = ExtResource( 9 )
+
+[node name="smallFishy28" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 41, -63, 0 )
+script = ExtResource( 34 )
+
+[node name="Sprite3D" type="Sprite3D" parent="smallFishy28"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 opacity = 0.75
 pixel_size = 0.0625
@@ -5655,6 +6068,26 @@ vframes = 6
 frame = 24
 script = ExtResource( 9 )
 
+[node name="WolfEelHead2" type="Sprite3D" parent="."]
+transform = Transform( 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, 41.667, -68.0663, 2 )
+flip_h = true
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 28
+script = ExtResource( 9 )
+
+[node name="WolfEelBody2" type="Sprite3D" parent="."]
+transform = Transform( 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, 42.533, -68.5663, 2 )
+flip_h = true
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 24
+script = ExtResource( 9 )
+
 [node name="LiveCorals" type="Spatial" parent="."]
 
 [node name="coral" type="Spatial" parent="LiveCorals"]
@@ -5668,6 +6101,11 @@ hframes = 6
 vframes = 6
 frame = 30
 script = ExtResource( 9 )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -66, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 45 )
 
 [editable path="lemon"]
 [editable path="heartFruit"]
